@@ -1,0 +1,8 @@
+name: COCO_SERVICE_NAME
+version: COCO_SERVICE_VERSION
+threads_nb: 2
+heartbeat:
+    url: http://localhost:8800/
+    period: 60000
+log:
+    file: /tmp/COCO_SERVICE_NAME.log

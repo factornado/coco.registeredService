@@ -1,0 +1,82 @@
+{
+    "swaggerVersion": "1.2",
+    "resourcePath": "\/COCO_SERVICE_NAME",
+    "basePath": "\/api",
+    "apiVersion": "1.0",
+    "produces": ["*\/*", "application\/json"],
+    "apis": [
+        {
+            "path": "\/COCO_SERVICE_NAME\/COCO_SERVICE_VERSION\/info",
+            "operations": [
+                {
+                    "notes": "Get the information on the service's parameters.",
+                    "method": "GET",
+                    "responseMessages": [
+                        {"message": "OK", "code": 200},
+                        {"message": "Unauthorized", "code": 401},
+                        {"message": "Forbidden", "code": 403},
+                        {"message": "Not Found", "code": 404}
+                        ],
+                    "deprecated": false,
+                    "produces": ["application\/json"],
+                    "parameters": []
+                    }
+                ]
+            },
+        {
+            "path": "\/COCO_SERVICE_NAME\/COCO_SERVICE_VERSION\/heartbeat",
+            "operations": [
+                {
+                    "notes": "Tell the registry that the service is alive.",
+                    "method": "GET",
+                    "responseMessages": [
+                        {"message": "OK", "code": 200},
+                        {"message": "Unauthorized", "code": 401},
+                        {"message": "Forbidden", "code": 403},
+                        {"message": "Not Found", "code": 404}
+                        ],
+                    "deprecated": false,
+                    "produces": ["application\/json"],
+                    "parameters": []
+                    }
+                ]
+            },
+        {
+            "path": "\/COCO_SERVICE_NAME\/COCO_SERVICE_VERSION\/{uri}",
+            "operations": [
+                {
+                    "notes": "Test the service.",
+                    "method": "GET",
+                    "responseMessages": [
+                        {"message": "OK", "code": 200},
+                        {"message": "Unauthorized", "code": 401},
+                        {"message": "Forbidden", "code": 403},
+                        {"message": "Not Found", "code": 404}
+                        ],
+                    "deprecated": false,
+                    "produces": ["application\/json"],
+                    "parameters": [
+                        {
+                            "name": "uri",
+                            "type": "string",
+                            "format": null,
+                            "paramType": "path",
+                            "required": true,
+                            "defaultValue": "hello/world",
+                            "description": "An URI."
+                            },
+                        {
+                            "name": "param",
+                            "type": "string",
+                            "format": "date-time",
+                            "paramType": "query",
+                            "required": true,
+                            "defaultValue": "2016-03-01",
+                            "description": "A parameter."
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
