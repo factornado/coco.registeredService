@@ -36,6 +36,7 @@ class SomeHandler(web.RequestHandler):
 
 app = web.Application([
     ("/(swagger.json)", web.StaticFileHandler, {'path': os.path.dirname(__file__)}),
+    ("/swagger", web.RedirectHandler, {'url': '/swagger.json'}),
     ("/heartbeat", Heartbeat),
     ("/info", Info),
     ("/(.*)", SomeHandler),
