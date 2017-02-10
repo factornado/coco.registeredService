@@ -51,10 +51,9 @@ class Config(object):
 
     def register(self):
         request = httpclient.HTTPRequest(
-            '{}/register/{}/{}'.format(
+            '{}/register/{}'.format(
                 self.conf['heartbeat']['url'].rstrip('/'),
                 self.conf['name'],
-                self.conf['version'],
                 ),
             method='POST',
             body=json.dumps({

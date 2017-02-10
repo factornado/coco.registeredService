@@ -6,7 +6,7 @@
     "produces": ["*\/*", "application\/json"],
     "apis": [
         {
-            "path": "\/COCO_SERVICE_NAME\/COCO_SERVICE_VERSION\/info",
+            "path": "\/COCO_SERVICE_NAME\/info",
             "operations": [
                 {
                     "notes": "Get the information on the service's parameters.",
@@ -24,7 +24,7 @@
                 ]
             },
         {
-            "path": "\/COCO_SERVICE_NAME\/COCO_SERVICE_VERSION\/heartbeat",
+            "path": "\/COCO_SERVICE_NAME\/heartbeat",
             "operations": [
                 {
                     "notes": "Tell the registry that the service is alive.",
@@ -42,7 +42,7 @@
                 ]
             },
         {
-            "path": "\/COCO_SERVICE_NAME\/COCO_SERVICE_VERSION\/{uri}",
+            "path": "\/COCO_SERVICE_NAME\/{uri}",
             "operations": [
                 {
                     "notes": "Test the service.",
