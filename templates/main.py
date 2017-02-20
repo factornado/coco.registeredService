@@ -1,7 +1,6 @@
-import yaml
 import os
 import time
-from tornado import ioloop, web, httpserver, httpclient
+from tornado import ioloop, web, httpserver
 import logging
 
 from utils import Config
@@ -17,6 +16,7 @@ logging.Formatter.converter = time.gmtime
 logging.getLogger('tornado').setLevel(logging.WARNING)
 logging.info('='*80)
 
+
 class Info(web.RequestHandler):
     def get(self):
         self.write(config.conf)
@@ -26,6 +26,7 @@ class Heartbeat(web.RequestHandler):
     def get(self):
         config.register()
         self.write("ok")
+
 
 class SomeHandler(web.RequestHandler):
     def get(self, param=''):
