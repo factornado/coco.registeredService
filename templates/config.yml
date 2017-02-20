@@ -1,8 +1,29 @@
 name: COCO_SERVICE_NAME
 version: COCO_SERVICE_VERSION
-threads_nb: 2
-heartbeat:
-    url: http://localhost:8800/
-    period: 60000
 log:
     file: /tmp/COCO_SERVICE_NAME.log
+
+heartbeat:
+    url: http://localhost:8800/
+    period: 30                         # The period between two heatbeat callback (in sec).
+
+threads_nb: 4                          # The number of threads that the server will have. Must be greater than do_threads_nb
+db:
+    mongo:
+        host:
+            host01:
+                address: 'localhost:27017'
+        database:
+            db01:
+                host: host01
+                name: db01
+        collection:
+            coll01:
+                database: db01
+                name: coll01
+services:
+    tasks:
+        tasks:
+            get: /tasks/{task}
+            post: /tasks/{task}/{key}
+            put: /tasks/{task}/{key}/{status}/{lastPost}

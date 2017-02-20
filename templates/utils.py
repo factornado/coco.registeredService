@@ -3,13 +3,36 @@ import yaml
 import pymongo
 import logging
 import json
-from tornado import httpclient
+import re
+import requests
+import pandas as pd
+from tornado import httpclient, web
 
 
 class Kwargs(object):
     def __init__(self, **kwargs):
         for key, val in kwargs.items():
             self.__setattr__(key, val)
+
+
+class WebMethod(object):
+    def __init__(self, method, url):
+        self.method = method
+        self.url = url
+        self.params = re.findall("{(.*?)}", self.url)
+        self.__doc__ = (
+            '\nParameters\n----------\n' +
+            '\n'.join(["{} : str".format(x) for x in self.params]))
+
+    def __call__(self, data='', **kwargs):
+        response = requests.request(
+            method=self.method,
+            url=self.url.format(**kwargs),
+            data=pd.json.dumps(data),
+            )
+        if not response.ok:
+            raise web.HTTPError(response.status_code, response.reason)
+        return response
 
 
 class Config(object):
@@ -31,6 +54,17 @@ class Config(object):
                 })
             for hostname, host in _mongo.get('host', {}).items()
             })
+        self.services = Kwargs(**{
+            key: Kwargs(**{
+                subkey: Kwargs(**{
+                    subsubkey: WebMethod(
+                        subsubkey,
+                        self.conf['heartbeat']['url']+key+subsubval,
+                        )
+                    for subsubkey, subsubval in subval.items()})
+                for subkey, subval in val.items()
+                })
+            for key, val in self.conf.get('services', {}).items()})
 
     def get_port(self):
         if 'port' not in self.conf:
@@ -47,7 +81,7 @@ class Config(object):
             )
         client = httpclient.HTTPClient()
         r = client.fetch(request, raise_error=False)
-        logging.info('{} HEARTBEAT ({}).'.format(
+        logging.debug('{} HEARTBEAT ({}).'.format(
                 r.code, r.reason[:30]))
 
     def register(self):
@@ -65,5 +99,5 @@ class Config(object):
             )
         client = httpclient.HTTPClient()
         r = client.fetch(request, raise_error=False)
-        logging.info('{} REGISTER ({}).'.format(
+        logging.debug('{} REGISTER ({}).'.format(
                 r.code, r.reason[:30]))

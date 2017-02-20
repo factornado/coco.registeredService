@@ -8,11 +8,12 @@ from utils import Config
 config = Config('config.yml')
 
 logging.basicConfig(
-    level=10,
+    level=20,  # Set to 10 for debug logs.
     filename=config.conf['log']['file'],
     format='%(asctime)s (%(filename)s:%(lineno)s)- %(levelname)s - %(message)s',
     )
 logging.Formatter.converter = time.gmtime
+logging.getLogger('requests').setLevel(logging.WARNING)
 logging.getLogger('tornado').setLevel(logging.WARNING)
 logging.info('='*80)
 
@@ -47,15 +48,13 @@ if __name__ == '__main__':
     port = config.get_port()  # We need to have a fixed port in both forks.
     logging.info('Listening on port {}'.format(port))
     time.sleep(2)  # We sleep for a few seconds to let the registry start.
-    # config.register()
     if os.fork():
         config.register()
-        # print('Listening on port', port)
         server = httpserver.HTTPServer(app)
         server.bind(config.get_port(), address='0.0.0.0')
         server.start(config.conf['threads_nb'])
         ioloop.IOLoop.current().start()
     else:
         ioloop.PeriodicCallback(config.heartbeat,
-                                config.conf['heartbeat']['period']).start()
+                                config.conf['heartbeat']['period']*1000).start()
         ioloop.IOLoop.instance().start()

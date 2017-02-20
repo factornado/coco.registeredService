@@ -30,12 +30,13 @@ Edit the `config.yml` and tune the parameters.
 
 Restart supervisor:
 
+    cd coco.main
     source activate supervisor
     supervisorctl reload
     supervisorctl start all
 
 You should be able to test your service through the registry:
 
-    curl http://localhost:8800/myservice/v1/foo
+    curl http://localhost:8800/myservice/foo
 
     > Hello from service myservice. You've asked for uri foo
